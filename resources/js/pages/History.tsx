@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import { router } from "@inertiajs/react";
 import { UserPlus, Building2, FileText, Trash2, Pencil, Plus, CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { format } from "date-fns";
@@ -61,6 +60,7 @@ function formatDateTime(date: Date): string {
 }
 
 const History = () => {
+  
   const [userFilter, setUserFilter] = useState<string>("all");
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();

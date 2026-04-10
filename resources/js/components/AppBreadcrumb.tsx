@@ -15,18 +15,35 @@ interface BreadcrumbEntry {
 
 export function AppBreadcrumb() {
   const { url } = usePage();
-  const searchParams = new URLSearchParams(window.location.search);
-  const path = new URL(url, window.location.origin).pathname;
+  const location = new URL(url || "/", window.location.origin);
+  const searchParams = location.searchParams;
+  const path = location.pathname;
+  const pathParts = path.split('/');
 
-  const projectId = searchParams.get("project") || "";
+  let projectId = searchParams.get("project") || "";
+  if (path.startsWith("/management/") || path.match(/^\/projects\/[^/]+\/(blocs|tranches)/)) {
+      projectId = pathParts[2]; // extracting ID from route
+  }
+
   const projectName = searchParams.get("name") || "Project";
   const companyId = searchParams.get("company") || "";
   const companyName = searchParams.get("companyName") || "Company";
+  const trancheId = searchParams.get("tranche") || "";
+  const trancheName = searchParams.get("trancheName") || "Tranche";
+  const blocId = searchParams.get("bloc") || "";
+  const blocName = searchParams.get("blocName") || "Bloc";
 
   const crumbs: BreadcrumbEntry[] = [];
 
   const companyQuery = companyId ? `?company=${companyId}&companyName=${encodeURIComponent(companyName)}` : "";
-  const projectQuery = projectId ? `&project=${projectId}&name=${encodeURIComponent(projectName)}` : "";
+  const projectQuery = projectId ? `project=${projectId}&name=${encodeURIComponent(projectName)}` : "";
+  const trancheQuery = trancheId ? `&tranche=${trancheId}&trancheName=${encodeURIComponent(trancheName)}` : "";
+  const blocQuery = blocId ? `&bloc=${blocId}&blocName=${encodeURIComponent(blocName)}` : "";
+  const companyQueryAmp = companyId ? `&company=${companyId}&companyName=${encodeURIComponent(companyName)}` : "";
+
+  const tranchesHref = `/tranches?${projectQuery}${companyQueryAmp}`;
+  const blocsHref = `/blocs?${projectQuery}${companyQueryAmp}${trancheQuery}`;
+  const pmHref = `/project-management?${projectQuery}${companyQueryAmp}${trancheQuery}${blocQuery}`;
 
   if (path === "/dashboard") {
     crumbs.push({ label: "Dashboard" });
@@ -34,12 +51,12 @@ export function AppBreadcrumb() {
     crumbs.push({ label: "Companies" });
   } else if (path === "/projects") {
     crumbs.push({ label: "Companies", href: "/companies" });
-    if (companyName) {
+    if (companyName && companyId) {
       crumbs.push({ label: decodeURIComponent(companyName) });
     } else {
       crumbs.push({ label: "Projects" });
     }
-  } else if (path === "/project-management") {
+  } else if (path === "/tranches" || path.match(/^\/projects\/[^/]+\/tranches/)) {
     crumbs.push({ label: "Companies", href: "/companies" });
     if (companyId) {
       crumbs.push({ label: decodeURIComponent(companyName), href: `/projects${companyQuery}` });
@@ -47,6 +64,29 @@ export function AppBreadcrumb() {
       crumbs.push({ label: "Projects", href: "/projects" });
     }
     crumbs.push({ label: decodeURIComponent(projectName) });
+  } else if (path === "/blocs" || path.match(/^\/projects\/[^/]+\/blocs/)) {
+    crumbs.push({ label: "Companies", href: "/companies" });
+    if (companyId) {
+      crumbs.push({ label: decodeURIComponent(companyName), href: `/projects${companyQuery}` });
+    } else {
+      crumbs.push({ label: "Projects", href: "/projects" });
+    }
+    crumbs.push({ label: decodeURIComponent(projectName), href: tranchesHref });
+    crumbs.push({ label: decodeURIComponent(trancheName) });
+  } else if (path === "/project-management" || path.startsWith("/management/")) {
+    crumbs.push({ label: "Companies", href: "/companies" });
+    if (companyId) {
+      crumbs.push({ label: decodeURIComponent(companyName), href: `/projects${companyQuery}` });
+    } else {
+      crumbs.push({ label: "Projects", href: "/projects" });
+    }
+    crumbs.push({ label: decodeURIComponent(projectName), href: tranchesHref });
+    if (trancheId) {
+      crumbs.push({ label: decodeURIComponent(trancheName), href: blocsHref });
+    }
+    if (blocId) {
+      crumbs.push({ label: decodeURIComponent(blocName) });
+    }
   } else if (path === "/property-types") {
     crumbs.push({ label: "Companies", href: "/companies" });
     if (companyId) {
@@ -55,10 +95,9 @@ export function AppBreadcrumb() {
       crumbs.push({ label: "Projects", href: "/projects" });
     }
     if (projectId) {
-      crumbs.push({
-        label: decodeURIComponent(projectName),
-        href: `/project-management?project=${projectId}&name=${encodeURIComponent(projectName)}${companyId ? `&company=${companyId}&companyName=${encodeURIComponent(companyName)}` : ""}`,
-      });
+      crumbs.push({ label: decodeURIComponent(projectName), href: tranchesHref });
+      if (trancheId) crumbs.push({ label: decodeURIComponent(trancheName), href: blocsHref });
+      if (blocId) crumbs.push({ label: decodeURIComponent(blocName), href: pmHref });
     }
     crumbs.push({ label: "Property Types" });
   } else if (path === "/properties") {
@@ -69,14 +108,12 @@ export function AppBreadcrumb() {
       crumbs.push({ label: "Projects", href: "/projects" });
     }
     if (projectId) {
-      const pmQuery = `?project=${projectId}&name=${encodeURIComponent(projectName)}${companyId ? `&company=${companyId}&companyName=${encodeURIComponent(companyName)}` : ""}`;
-      crumbs.push({
-        label: decodeURIComponent(projectName),
-        href: `/project-management${pmQuery}`,
-      });
+      crumbs.push({ label: decodeURIComponent(projectName), href: tranchesHref });
+      if (trancheId) crumbs.push({ label: decodeURIComponent(trancheName), href: blocsHref });
+      if (blocId) crumbs.push({ label: decodeURIComponent(blocName), href: pmHref });
       crumbs.push({
         label: "Property Types",
-        href: `/property-types${pmQuery}`,
+        href: `/property-types?${projectQuery}${companyQueryAmp}${trancheQuery}${blocQuery}`,
       });
     }
     crumbs.push({ label: "Properties" });
@@ -132,4 +169,3 @@ export function AppBreadcrumb() {
     </Breadcrumb>
   );
 }
-export default AppBreadcrumb;

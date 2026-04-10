@@ -1,8 +1,8 @@
+import { usePage } from "@inertiajs/react";
 import {
   LayoutDashboard, Settings, HelpCircle, Building2, ShoppingCart, Truck, Wallet, Contact,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { usePage } from "@inertiajs/react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter,
@@ -41,6 +41,7 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const { url } = usePage();
+  const location = { pathname: new URL(url || "/", window.location.origin).pathname };
 
   return (
     <Sidebar collapsible="icon">
@@ -67,7 +68,7 @@ export function AppSidebar() {
               <SidebarMenu>
                 {section.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={url === item.url}>
+                    <SidebarMenuButton asChild isActive={location.pathname === item.url}>
                       <NavLink to={item.url} end className="hover:bg-muted/50" activeClassName="bg-accent/10 text-accent-foreground font-semibold">
                         <item.icon className="w-[1.125rem] h-[1.125rem] mr-2 shrink-0" />
                         {!collapsed && <span className="flex-1">{item.title}</span>}

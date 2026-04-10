@@ -70,6 +70,7 @@ const articles: Record<string, { title: string; source: string; category: "real-
 };
 
 const NewsArticle = () => {
+  
   const params = new URLSearchParams(window.location.search);
   const articleId = params.get("id") || "1";
   const article = articles[articleId];

@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { router } from "@inertiajs/react";
+import { useState } from "react";
 import { Building2, Home, Landmark, Store, Briefcase, LayoutGrid, Warehouse, Plus, LucideIcon, Hotel, Factory, TreePine, Castle, Tent, School, Church, Hospital, Eye, Pencil, Trash2 } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -81,10 +81,15 @@ const defaultTypes: PropertyType[] = [
 
 const PropertyTypes = () => {
   const searchParams = new URLSearchParams(window.location.search);
+  
   const filterProject = searchParams.get("project");
   const projectName = searchParams.get("name") || "";
   const companyId = searchParams.get("company") || "";
   const companyName = searchParams.get("companyName") || "";
+  const trancheId = searchParams.get("tranche") || "";
+  const trancheName = searchParams.get("trancheName") || "";
+  const blocId = searchParams.get("bloc") || "";
+  const blocName = searchParams.get("blocName") || "";
 
   const [types, setTypes] = useState<PropertyType[]>(defaultTypes);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -99,6 +104,10 @@ const PropertyTypes = () => {
     if (projectName) params.set("name", projectName);
     if (companyId) params.set("company", companyId);
     if (companyName) params.set("companyName", companyName);
+    if (trancheId) params.set("tranche", trancheId);
+    if (trancheName) params.set("trancheName", trancheName);
+    if (blocId) params.set("bloc", blocId);
+    if (blocName) params.set("blocName", blocName);
     params.set("type", typeKey);
     router.visit(`/properties?${params.toString()}`);
   };

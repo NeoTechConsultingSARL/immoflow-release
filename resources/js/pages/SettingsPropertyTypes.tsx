@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { router } from "@inertiajs/react";
 import { Plus, Pencil, Trash2, Building2, Home, Landmark, Store, Briefcase, LayoutGrid, Warehouse, Hotel, Factory, TreePine, Castle, Tent, School, Church, Hospital, LucideIcon } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -52,6 +51,7 @@ const defaultTypes: PropertyType[] = [
 ];
 
 const SettingsPropertyTypes = () => {
+  
   const [types, setTypes] = useState<PropertyType[]>(defaultTypes);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<PropertyType | null>(null);

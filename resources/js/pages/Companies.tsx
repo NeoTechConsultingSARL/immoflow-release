@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { router } from "@inertiajs/react";
+import { useState } from "react";
 import { Building2, Plus, Pencil, Trash2, MapPin, Phone, Mail, Globe } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -45,6 +45,7 @@ const logoColors = [
 
 const Companies = () => {
   const [companies, setCompanies] = useState<Company[]>(initialCompanies);
+  
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [editing, setEditing] = useState<Company | null>(null);
@@ -124,7 +125,7 @@ const Companies = () => {
               {companies.map((company, idx) => (
                 <div
                   key={company.id}
-                  className="bg-card border border-border rounded-xl shadow-[var(--shadow-card)] overflow-hidden hover:shadow-[var(--shadow-elevated)] transition-shadow duration-300 cursor-pointer"
+                  className="group bg-card border border-border rounded-xl shadow-[var(--shadow-card)] overflow-hidden hover:shadow-[var(--shadow-elevated)] transition-shadow duration-300 cursor-pointer"
                   onClick={() => router.visit(`/projects?company=${company.id}&companyName=${encodeURIComponent(company.name)}`)}
                 >
                   <div className="p-6">
@@ -157,7 +158,18 @@ const Companies = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-border">
+                    <div className="relative flex items-center justify-between pt-4 border-t border-border rounded-b-xl -mx-6 px-6 -mb-6 pb-6 group-hover:bg-primary/10 transition-colors duration-300 overflow-hidden">
+                      <div
+                        className="absolute top-0 left-0 right-0 h-[3px]"
+                        style={{ background: [
+                          'linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)))',
+                          'linear-gradient(90deg, hsl(25 80% 55%), hsl(45 90% 55%))',
+                          'linear-gradient(90deg, hsl(160 50% 45%), hsl(190 60% 50%))',
+                          'linear-gradient(90deg, hsl(270 50% 55%), hsl(300 50% 55%))',
+                          'linear-gradient(90deg, hsl(200 60% 50%), hsl(220 55% 55%))',
+                          'linear-gradient(90deg, hsl(340 55% 50%), hsl(10 60% 55%))',
+                        ][idx % 6] }}
+                      />
                       <div className="flex items-center gap-2">
                         <Building2 className="w-4 h-4 text-muted-foreground" />
                         <span className="text-sm font-semibold">{company.properties} properties</span>

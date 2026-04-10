@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
 import { router } from "@inertiajs/react";
+import { useState, useMemo } from "react";
 import { Save, X } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -44,6 +44,7 @@ const buildEmptyPermissions = (): Permissions =>
   );
 
 const CreateEditRole = () => {
+  
   const { toast } = useToast();
   const [roleName, setRoleName] = useState("");
   const [permissions, setPermissions] = useState<Permissions>(buildEmptyPermissions);

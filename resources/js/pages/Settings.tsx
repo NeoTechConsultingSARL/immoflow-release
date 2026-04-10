@@ -12,6 +12,8 @@ const settingsTiles = [
 ];
 
 const Settings = () => {
+  
+
   const handleTileClick = (key: string) => {
     if (key === "property-types") router.visit("/settings/property-types");
     if (key === "users") router.visit("/settings/users");

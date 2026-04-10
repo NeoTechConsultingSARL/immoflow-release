@@ -25,6 +25,22 @@ Route::get('/project-management', function () {
     return Inertia::render('ProjectManagement');
 })->name('project-management');
 
+Route::get('/management/{project}', function () {
+    return Inertia::render('ProjectManagement');
+})->name('management');
+
+Route::get('/tranches', function () {
+    return Inertia::render('Tranches');
+})->name('tranches');
+
+Route::get('/projects/{project}/blocs', function () {
+    return Inertia::render('Blocs');
+})->name('projects.blocs');
+
+Route::get('/blocs', function () {
+    return Inertia::render('Blocs');
+})->name('blocs');
+
 Route::get('/property-types', function () {
     return Inertia::render('PropertyTypes');
 })->name('property-types');

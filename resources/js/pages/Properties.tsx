@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { router } from "@inertiajs/react";
 import { Home, Plus, Pencil, Trash2, MapPin, BedDouble, Bath, Ruler, Euro, LayoutGrid, Rows3, Table as TableIcon } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -119,6 +118,7 @@ const Properties = () => {
   const [deleting, setDeleting] = useState<Property | null>(null);
   const [form, setForm] = useState(emptyForm);
   const searchParams = new URLSearchParams(window.location.search);
+  
   const filterProject = searchParams.get("project") || "all";
   const filterType = searchParams.get("type") || "all";
 

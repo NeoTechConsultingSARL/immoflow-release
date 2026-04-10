@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { router } from "@inertiajs/react";
+import { useState } from "react";
 import { Newspaper, ExternalLink, TrendingUp, Building2, Globe, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -86,6 +86,7 @@ const categoryConfig = {
 };
 
 const NewsSection = () => {
+  
   const [news] = useState<NewsItem[]>(mockNews);
 
   return (

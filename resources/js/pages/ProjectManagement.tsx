@@ -1,7 +1,7 @@
 import { router } from "@inertiajs/react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
-import { Home, DollarSign, Users, XCircle, Briefcase, BarChart3, Building, Car, GitBranch, HardHat, ChevronRight, FileText } from "lucide-react";
+import { Home, DollarSign, Users, XCircle, Briefcase, BarChart3, Building, Car, GitBranch, HardHat, FileText, ChevronRight } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 
 const tiles = [
@@ -15,21 +15,28 @@ const tiles = [
   { id: "parking", label: "Parking", description: "Allocate and manage parking spaces", icon: Car, bg: "bg-card", hoverBg: "hover:bg-gradient-to-br hover:from-stone-500/80 hover:to-stone-700/80", iconColor: "text-stone-600", hoverIconColor: "group-hover:text-white", textColor: "text-foreground", hoverTextColor: "group-hover:text-white/90", subTextColor: "text-muted-foreground", hoverSubTextColor: "group-hover:text-white/60", iconWrapBg: "bg-stone-500/10", hoverIconWrapBg: "group-hover:bg-white/10" },
   { id: "eclatement", label: "Eclatement", description: "Handle project splits and breakdowns", icon: GitBranch, bg: "bg-card", hoverBg: "hover:bg-gradient-to-br hover:from-sky-500/80 hover:to-sky-700/80", iconColor: "text-sky-600", hoverIconColor: "group-hover:text-white", textColor: "text-foreground", hoverTextColor: "group-hover:text-white/90", subTextColor: "text-muted-foreground", hoverSubTextColor: "group-hover:text-white/60", iconWrapBg: "bg-sky-500/10", hoverIconWrapBg: "group-hover:bg-white/10" },
   { id: "construction", label: "Construction Site", description: "Monitor construction progress and site operations", icon: HardHat, bg: "bg-card", hoverBg: "hover:bg-gradient-to-br hover:from-orange-500/80 hover:to-orange-700/80", iconColor: "text-orange-600", hoverIconColor: "group-hover:text-white", textColor: "text-foreground", hoverTextColor: "group-hover:text-white/90", subTextColor: "text-muted-foreground", hoverSubTextColor: "group-hover:text-white/60", iconWrapBg: "bg-orange-500/10", hoverIconWrapBg: "group-hover:bg-white/10" },
-  { id: "documents", label: "Project Documents", description: "Access and organize all project-related documentation", icon: FileText, bg: "bg-card", hoverBg: "hover:bg-gradient-to-br hover:from-indigo-500/80 hover:to-indigo-700/80", iconColor: "text-indigo-600", hoverIconColor: "group-hover:text-white", textColor: "text-foreground", hoverTextColor: "group-hover:text-white/90", subTextColor: "text-muted-foreground", hoverSubTextColor: "group-hover:text-white/60", iconWrapBg: "bg-indigo-500/10", hoverIconWrapBg: "group-hover:bg-white/10" },
+  { id: "documents", label: "Project Documents", description: "Store and manage project files and documents", icon: FileText, bg: "bg-card", hoverBg: "hover:bg-gradient-to-br hover:from-indigo-500/80 hover:to-indigo-700/80", iconColor: "text-indigo-600", hoverIconColor: "group-hover:text-white", textColor: "text-foreground", hoverTextColor: "group-hover:text-white/90", subTextColor: "text-muted-foreground", hoverSubTextColor: "group-hover:text-white/60", iconWrapBg: "bg-indigo-500/10", hoverIconWrapBg: "group-hover:bg-white/10" },
 ];
 
 const ProjectManagement = () => {
   const searchParams = new URLSearchParams(window.location.search);
+  
   const projectId = searchParams.get("project") || "";
   const projectName = searchParams.get("name") || "Project";
   const companyId = searchParams.get("company") || "";
   const companyName = searchParams.get("companyName") || "";
+  const trancheId = searchParams.get("tranche") || "";
+  const trancheName = searchParams.get("trancheName") || "";
+  const blocId = searchParams.get("bloc") || "";
+  const blocName = searchParams.get("blocName") || "";
 
   const companyQuery = companyId ? `&company=${companyId}&companyName=${encodeURIComponent(companyName)}` : "";
+  const trancheQuery = trancheId ? `&tranche=${trancheId}&trancheName=${encodeURIComponent(trancheName)}` : "";
+  const blocQuery = blocId ? `&bloc=${blocId}&blocName=${encodeURIComponent(blocName)}` : "";
 
   const handleTileClick = (tileId: string) => {
     if (tileId === "properties") {
-      router.visit(`/property-types?project=${projectId}&name=${encodeURIComponent(projectName)}${companyQuery}`);
+      router.visit(`/property-types?project=${projectId}&name=${encodeURIComponent(projectName)}${companyQuery}${trancheQuery}${blocQuery}`);
     }
     // Other tiles can be wired up later
   };

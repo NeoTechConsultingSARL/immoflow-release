@@ -1,32 +1,28 @@
 import { Link, usePage } from "@inertiajs/react";
-import { forwardRef, ReactNode } from "react";
+import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface NavLinkCompatProps {
-  className?: string;
+  className?: string | ((props: { isActive: boolean; isPending: boolean }) => string);
   activeClassName?: string;
+  pendingClassName?: string;
+  to?: string;
   href?: string;
-  to?: string; // Support for existing 'to' prop
-  children?: ReactNode;
-  end?: boolean;
+  children?: React.ReactNode;
   [key: string]: any;
 }
 
 const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
-  ({ className, activeClassName, href, to, end, ...props }, ref) => {
+  ({ className, activeClassName, pendingClassName, to, href, ...props }, ref) => {
     const { url } = usePage();
-    const targetHref = href || to || "#";
-    
-    // Improved active detection
-    const isActive = end 
-      ? url === targetHref
-      : url.startsWith(targetHref);
+    const targetUrl = to || href || "#";
+    const isActive = new URL(url || "/", window.location.origin).pathname === targetUrl;
+    const isPending = false;
 
     return (
       <Link
-        ref={ref}
-        href={targetHref}
-        className={cn(className, isActive && activeClassName)}
+        href={targetUrl}
+        className={typeof className === 'function' ? className({ isActive, isPending }) : cn(className, isActive && activeClassName, isPending && pendingClassName)}
         {...props}
       />
     );
@@ -35,5 +31,5 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
 
 NavLink.displayName = "NavLink";
 
-export { NavLink };
 export default NavLink;
+export { NavLink };

@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { router } from "@inertiajs/react";
+import { useState } from "react";
 import { Plus, Shield, Pencil, Trash2 } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -67,6 +67,7 @@ const countPermissions = (perms: Record<string, Record<string, boolean>>) => {
 };
 
 const SettingsProfiles = () => {
+  
   const [roles, setRoles] = useState<Role[]>(initialRoles);
 
   const handleDelete = (id: string) => {

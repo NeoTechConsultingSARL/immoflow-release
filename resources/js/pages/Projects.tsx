@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { router } from "@inertiajs/react";
+import { useState } from "react";
 import { FolderKanban, Plus, Pencil, Trash2, Building2, MapPin, Calendar, Euro, LayoutGrid, FileText, ClipboardList, X } from "lucide-react";
 import { AppBreadcrumb } from "@/components/AppBreadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -74,6 +74,7 @@ const Projects = () => {
   const [filterCompany, setFilterCompany] = useState<string>(searchParams.get("company") || "all");
   const companyName = searchParams.get("companyName") || "";
   const companyId = searchParams.get("company") || "";
+  
 
   const openCreate = () => { setEditing(null); setForm(emptyForm); setDialogOpen(true); };
 
@@ -170,11 +171,11 @@ const Projects = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filtered.map((project) => (
+              {filtered.map((project, index) => (
                 <div
                   key={project.id}
-                  className="bg-card border border-border rounded-xl shadow-[var(--shadow-card)] overflow-hidden hover:shadow-[var(--shadow-elevated)] transition-shadow duration-300 flex flex-col cursor-pointer"
-                  onClick={() => router.visit(`/project-management?project=${project.id}&name=${encodeURIComponent(project.name)}&company=${project.companyId}&companyName=${encodeURIComponent(project.companyName)}`)}
+                  className="group bg-card border border-border rounded-xl shadow-[var(--shadow-card)] overflow-hidden hover:shadow-[var(--shadow-elevated)] transition-shadow duration-300 flex flex-col cursor-pointer"
+                  onClick={() => router.visit(`/tranches?project=${project.id}&name=${encodeURIComponent(project.name)}&company=${project.companyId}&companyName=${encodeURIComponent(project.companyName)}`)}
                 >
                   <div className="p-6 flex-1">
                     <div className="flex items-start justify-between mb-3">
@@ -185,7 +186,7 @@ const Projects = () => {
                         <TooltipProvider delayDuration={300}>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" onClick={(e) => { e.stopPropagation(); router.visit(`/project-management?project=${project.id}&name=${encodeURIComponent(project.name)}&company=${project.companyId}&companyName=${encodeURIComponent(project.companyName)}`); }}>
+                              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" onClick={(e) => { e.stopPropagation(); router.visit(`/tranches?project=${project.id}&name=${encodeURIComponent(project.name)}&company=${project.companyId}&companyName=${encodeURIComponent(project.companyName)}`); }}>
                                 <LayoutGrid className="w-3.5 h-3.5" />
                               </Button>
                             </TooltipTrigger>
@@ -242,7 +243,18 @@ const Projects = () => {
                     </div>
                   </div>
 
-                  <div className="px-6 py-4 border-t border-border bg-muted/30 flex items-center justify-between text-sm">
+                  <div className="relative px-6 py-4 border-t border-border bg-muted/30 group-hover:bg-primary/10 flex items-center justify-between text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300 overflow-hidden">
+                    <div
+                      className="absolute top-0 left-0 right-0 h-[3px]"
+                      style={{ background: [
+                        'linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)))',
+                        'linear-gradient(90deg, hsl(25 80% 55%), hsl(45 90% 55%))',
+                        'linear-gradient(90deg, hsl(160 50% 45%), hsl(190 60% 50%))',
+                        'linear-gradient(90deg, hsl(270 50% 55%), hsl(300 50% 55%))',
+                        'linear-gradient(90deg, hsl(200 60% 50%), hsl(220 55% 55%))',
+                        'linear-gradient(90deg, hsl(340 55% 50%), hsl(10 60% 55%))',
+                      ][index % 6] }}
+                    />
                     <div className="flex items-center gap-1.5">
                       <Euro className="w-3.5 h-3.5 text-muted-foreground" />
                       <span className="font-semibold">{project.budget}</span>
